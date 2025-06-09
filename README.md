@@ -44,6 +44,7 @@ Functional examples are included in the
 | cleanup\_policy\_dry\_run | If true, the cleanup pipeline is prevented from deleting versions in this repository | `bool` | `false` | no |
 | description | The user-provided description of the repository | `string` | `null` | no |
 | docker\_config | Docker repository config contains repository level configuration for the repositories of docker type | <pre>object({<br>    immutable_tags = optional(bool)<br>  })</pre> | `null` | no |
+| enable\_dynamic\_iam\_members | Enables roles to be provisioned for members who are not known during terraform plan. | `bool` | `false` | no |
 | enable\_vpcsc\_policy | Enable VPC SC policy | `bool` | `false` | no |
 | format | The format of packages that are stored in the repository. You can only create alpha formats if you are a member of the alpha user group. | `string` | n/a | yes |
 | kms\_key\_name | The Cloud KMS resource name of the customer managed encryption key that’s used to encrypt the contents of the Repository. Has the form: projects/my-project/locations/my-region/keyRings/my-kr/cryptoKeys/my-key. This value may not be changed after the Repository has been created | `string` | `null` | no |

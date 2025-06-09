@@ -14,6 +14,15 @@
  * limitations under the License.
  */
 
+locals {
+  readers = contains(keys(var.members), "readers") ? var.enable_dynamic_iam_members ? {
+    for idx, m in var.members["readers"] : idx => m
+  } : { for m in toset(var.members["readers"]) : m.key => m.value } : {}
+  writers = contains(keys(var.members), "writers") ? var.enable_dynamic_iam_members ? {
+    for idx, m in var.members["writers"] : idx => m
+  } : { for m in toset(var.members["writers"]) : m.key => m.value } : {}
+}
+
 resource "google_artifact_registry_repository" "repo" {
   provider = google-beta
 
@@ -194,7 +203,7 @@ resource "google_artifact_registry_vpcsc_config" "repo_vpc_sc" {
 }
 
 resource "google_artifact_registry_repository_iam_member" "readers" {
-  for_each   = toset(contains(keys(var.members), "readers") ? var.members["readers"] : [])
+  for_each   = local.readers
   project    = google_artifact_registry_repository.repo.project
   location   = google_artifact_registry_repository.repo.location
   repository = google_artifact_registry_repository.repo.name
@@ -208,7 +217,7 @@ resource "google_artifact_registry_repository_iam_member" "readers" {
 }
 
 resource "google_artifact_registry_repository_iam_member" "writers" {
-  for_each   = toset(contains(keys(var.members), "writers") ? var.members["writers"] : [])
+  for_each   = local.writers
   project    = google_artifact_registry_repository.repo.project
   location   = google_artifact_registry_repository.repo.location
   repository = google_artifact_registry_repository.repo.name

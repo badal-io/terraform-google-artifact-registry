@@ -176,6 +176,12 @@ variable "vpcsc_policy" {
 }
 
 // IAM
+variable "enable_dynamic_iam_members" {
+  type        = bool
+  description = "Enables roles to be provisioned for members who are not known during terraform plan."
+  default     = false
+}
+
 variable "members" {
   type        = map(list(string))
   description = "Artifact Registry Reader and Writer roles for Users/SAs. Key names must be readers and/or writers"
